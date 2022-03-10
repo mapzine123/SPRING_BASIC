@@ -10,38 +10,38 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class BoardDaoImpl implements BoardDao {
+public class BoardDaoImpl1 implements BoardDao {
     @Autowired
     private SqlSession session;
 
     private String namespace = "com.fastcampus.ch4.dao.BoardMapper.";
 
-    // SELECT
     @Override
     public BoardDto select(int bno) throws Exception {
         return session.selectOne(namespace + "select", bno);
     }
+
     @Override
     public List<BoardDto> selectAll() throws Exception {
         return session.selectList(namespace + "selectAll");
     }
+
     @Override
     public int count() throws Exception {
         return session.selectOne(namespace + "count");
     }
+
     @Override
     public List<BoardDto> selectPage(Map map) throws Exception {
         return session.selectList(namespace + "selectPage", map);
-
     }
 
-
-    //DELETE
     @Override
     public int delete(int bno, String writer) throws Exception {
         Map map = new HashMap();
         map.put("bno", bno);
         map.put("writer", writer);
+
         return session.delete(namespace + "delete", map);
     }
 
@@ -50,49 +50,18 @@ public class BoardDaoImpl implements BoardDao {
         return session.delete(namespace + "deleteAll");
     }
 
-    // INSERT
     @Override
     public int insert(BoardDto dto) throws Exception {
         return session.insert(namespace + "insert", dto);
     }
 
-    // UPDATE
     @Override
     public int update(BoardDto dto) throws Exception {
         return session.update(namespace + "update", dto);
     }
+
     @Override
     public int increaseViewCnt(int bno) throws Exception {
         return session.update(namespace + "increaseViewCnt", bno);
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
