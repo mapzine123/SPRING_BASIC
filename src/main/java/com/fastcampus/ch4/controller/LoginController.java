@@ -70,10 +70,10 @@ public class LoginController {
     }
 
     private boolean loginCheck(String id, String pwd) {
-        User user = null;
+        UserDto user = null;
 
         try {
-            user = userDao.selectUser(id);
+            user = userDao.select(id);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
