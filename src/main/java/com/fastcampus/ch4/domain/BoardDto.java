@@ -1,5 +1,7 @@
 package com.fastcampus.ch4.domain;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 import java.util.Objects;
 

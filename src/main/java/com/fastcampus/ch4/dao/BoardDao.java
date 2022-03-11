@@ -1,10 +1,12 @@
 package com.fastcampus.ch4.dao;
 
 import com.fastcampus.ch4.domain.BoardDto;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
+@Component
 public interface BoardDao {
     // SELECT
     BoardDto select(int bno) throws Exception;
