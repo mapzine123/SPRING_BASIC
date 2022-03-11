@@ -12,7 +12,7 @@ import java.util.Map;
 @Repository
 public class BoardDaoImpl implements BoardDao {
     @Autowired
-    private SqlSession session;
+    public SqlSession session;
 
     private String namespace = "com.fastcampus.ch4.dao.BoardMapper.";
 
@@ -33,6 +33,10 @@ public class BoardDaoImpl implements BoardDao {
     public List<BoardDto> selectPage(Map map) throws Exception {
         return session.selectList(namespace + "selectPage", map);
 
+    }
+
+    public String printSession() {
+        return session.toString();
     }
 
 

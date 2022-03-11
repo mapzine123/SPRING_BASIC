@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/**/root-context.xml")
 public class BoardDaoImpl1Test {
-    @Qualifier("boardDaoImpl1")
+    @Qualifier("boardDaoImpl")
     @Autowired
     BoardDao boardDao;
 
