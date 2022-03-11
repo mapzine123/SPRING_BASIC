@@ -1,0 +1,158 @@
+POM ( Project Object Model )
+프로젝트의 구조, 내용을 설명.
+프로젝트 관리 및 빌드에 필요한 환경 설정, 의존성 관리등의 정보 기술
+버전, 설정관리, 빌드 환경, 라이브러리 저장소등의 정보 포함
+
+<dependencies>
+# org.mybatis
+- SqlSession, SqlSessionFactory가 들어있음.
+
+# org.mybatis.spring
+- SqlSession, SqlSessionFactory의 Bean이 여기있음
+- root-context에서 bean 등록 해줘야함.
+- sqlSession : org.mybatis.spring.SqlSessionTemplate
+- sqlSessionFactory : org.mybatis.spring.SqlSessionFactoryBean
+
+# org.springframework.spring-jdbc
+- spring과 sql 연결해줌
+- root-context에서 bean 등록 해줘야함
+- org.springframework.jdbc.datasource.DriverManagerDataSource
+
+# mysql.mysql-connector-java
+- spring과 sql 연결해줌
+
+# com.google.guava
+- google의 코어 라이브러리, 프로젝트 구현 시 공통적으로 필요한 요소들이 구현되있음.
+- 반복되는 코드가 줄어들고 간결하게 구현이 가능해 가독성이 좋아짐.
+- https://blog.lulab.net/programming-java/java-library-guava/ 참조
+
+# org.springframework.spring-context
+- context는 bean들을 다루고, 추가적인 기능을 제공함.
+- ComponentScan이 있긴하더라. 근데 이거 없어도 되긴하더라.
+- 이거 이외에 core나 webmvc도 있는걸로 보아 context.xml파일에서 사용하는 듯.
+
+# org.springframework.spring-webmvc
+- DispatcherServlet 들어있음
+- controller, modelAndView 들어있음.
+- 아무래도 springframework.spring-web이랑 같이 되있는듯
+- InternalResourceViewResolver 있음
+
+# org.springframework.spring-aop
+- Advice 있음
+- 중복제거, 관심사의 분리
+- 근데 어디쓰는지는 잘 모르겠음.
+
+# org.aspectj.aspectjrt
+- AOP 구현을 위한 기능
+- @Aspect, @Before, @After, @Around 어노테이션 가지고있음
+- AspectJ 런타임 프로그램, 추가시 AspectJ의 기능 사용 가능
+
+# org.aspectj.aspectjweaver
+- aspect정보로 aspect를 구성한 코드를 생성하는데 필요한 유틸리티 프로그램
+- aspectjrt와 세트임
+
+# org.slf4j
+- Facade 패턴을 통한 JAVA 로깅 API 제공 ( ?? )
+- slf4j를 쓰면 어떤 라이브러리를 써도 동일하게 동작하는 코드를 만들 수 있다?
+- logging 관련 라이브러리가 아주 많은데, slf4j는 이런 라이브러리를 하나의 통일된 방식으로 사용가능한 방법을 제공함
+- https://codingnotes.tistory.com/72 참조
+
+# log4j
+- 자바 어플리케이션에서 빠르고 효과적으로 로깅 할 수 있도록 도와주는 오픈소스 프로젝트
+- 장점 : 어플리케이션에 문제가 있을 때 개발자가 자세한 상황을 알 수 있게 해줌 -> 테스팅에 필수불가결
+- 단점 : 코드의 가독성을 떨어뜨림
+- 로그 레벨
+    * FATAL : 아주 심각한 에러가 발생한 상태
+    * ERROR : 요청을 처리하는 중 문제가 발생한 상태
+    * WARN : 처리 가능한 문제이지만, 향후 에러의 원인이 될 수 있는 상태
+    * INFO : 로그인, 상태변경과 같은 정보성 메세지
+    * DEBUG : 개발시 디버그 용도로 사용
+    * TRACE : 디버그 레벨이 너무 광범한 것을 해결하기 위해서 좀 더 상세한 상태를 나타냄
+
+# javax.inject
+- 의존성 주입 ( @Autowired )
+- 이거 없어도 되지않나?
+
+# javax.servlet.javax.servlet-api
+- PageContext 들어있음
+- 웹 관련 요청에 대한 동적인 처리를 도와줌
+
+# javax.servlet.jstl
+- Jsp Standard Tag Library
+- el, core 들어있음
+- <%@ taglib prefix="c" url=http://java.sun.com/jsp/jstl/core" %> 에 들어가는 그것
+
+# javax.validation
+- 데이터의 검증에 필요함
+
+# org.springframework.spring-test
+- 구현이 잘 되는지 확인하기 위한 Test에 이용됨
+- RunWith(StringJUnit4ClassRunner.class)가 여기 들어있음.
+
+# junit
+- 위의 spring-test와 함께 Test에 이용됨
+- 4.12버전 이상이 필요
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- <dependencies> : 프로그렘에 import되는 dependency 목록 ( 의존성 정의 부분 )
+    * <groupId>, <artifactId> : 의존성 라이브러리 추가 필수값
+    * <version> : 동일한 artifact를 가진 라이브러리 중 어떤 버전을 가져올지 설정
+    * <type> : 의존성 라이브러리의 유형 ( Default : jar )
+    * <scope> : 해당 라이브러리가 적용될 범위 ( 최대 5개까지 지정가능 )
+        1. compile ( Default ) : 모든 클래스에서 사용 가능, 컴파일 및 배포시 같이 제공
+        2. provided : JDK, Container가 Runtime시에만 해당 라이브러리 제공, 컴파일, 테스트경로에서만 사용가능
+        3. runtime : 컴파일 땐 사용 안되고, 실행될 때만 사용됨.
+        4. test : 테스트시에만 라이브러리 사용
+        5. system : 저장소에서 관리되지 않고 직접 관리하는 JAR 추가. (?)
+    * <optional> : 의존성 정보를 다른 프로젝트에 전달하고 싶으면 false, 전달하고싶지 않으면 true
+- <build> : 빌드할 때 사용할 플러그인 목록 기록
+- <plugins> : maven 관련 plugin 정보 (선택사항)
+- <exclusions> : 특정 라이브러리를 제외
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
