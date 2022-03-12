@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserDao {
-    User selectUser(String id) throws Exception;
-    int deleteUser(String id) throws Exception;
-    int insertUser(User user) throws Exception;
-    int updateUser(User user) throws Exception;
+    UserDto select(String id) throws Exception;
+    int delete(String id) throws Exception;
+    int insert(UserDto user) throws Exception;
+    int update(UserDto user) throws Exception;
     int count() throws Exception;
-    void deleteAll() throws Exception;
+    int deleteAll() throws Exception;
 }
