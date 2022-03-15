@@ -24,6 +24,56 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
+    @PostMapping("/write")
+    public String write(BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr) {
+        String writer = (String)session.getAttribute("id");
+        boardDto.setWriter(writer);
+
+        try {
+            int rowCnt = boardService.write(boardDto);
+
+            if (rowCnt != 1) {
+                throw new Exception("Write failed");
+            }
+            rattr.addFlashAttribute("msg", "WRT_OK");
+            return "redirect:/board/list";
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute("boardDto", boardDto);
+            rattr.addFlashAttribute("msg", "WRT_ERR");
+            return "board";
+        }
+    }
+
+    @PostMapping("/modify")
+    public String modify(Integer page, Integer pageSize, BoardDto boardDto, Model m, HttpSession session, RedirectAttributes rattr) {
+        String writer = (String) session.getAttribute("id");
+        boardDto.setWriter(writer);
+
+        try {
+            int rowCnt = boardService.modify(boardDto);
+
+            if (rowCnt != 1) {
+                throw new Exception("modify failed");
+            }
+            rattr.addFlashAttribute("msg", "MOD_OK");
+            return "redirect:/board/list?page="+page+"&pageSize="+pageSize;
+        } catch (Exception e) {
+            e.printStackTrace();
+            m.addAttribute(boardDto);
+            m.addAttribute("msg", "MOD_ERR");
+
+            return "board";
+        }
+    }
+
+    @GetMapping("/write")
+    public String write(Model m) {
+        m.addAttribute("mode", "new");
+
+        return "board";
+    }
+
     @GetMapping("/read")
     public String read(Integer bno, Integer page, Integer pageSize, Model m) {
         try {
@@ -61,9 +111,11 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public String list(Integer page, Integer pageSize, HttpServletRequest request, Model m) {
+    public String list(Integer page, Integer pageSize, HttpServletRequest request, HttpSession session, Model m) {
         if(!loginCheck(request))
             return "redirect:/login/login?toURL="+request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
+        System.out.println("page = " + page);
+        System.out.println("pageSize = " + pageSize);
 
         if (page == null) {
             page = 1;
