@@ -1,9 +1,11 @@
 package com.fastcampus.ch4.domain;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 public class SearchCondition {
     private Integer page = 1;
     private Integer pageSize = 10;
-    private Integer offset = 0;
+//    private Integer offset = 0;
     private String keyword = "";
     private String option = "";
 
@@ -15,6 +17,33 @@ public class SearchCondition {
         this.keyword = keyword;
         this.option = option;
     }
+
+    public String getQueryString(Integer page) {
+        // ?page=1&pageSize=10&option=T&keyword="title" 을 만들어주는 메서드
+        return UriComponentsBuilder.newInstance()
+                .queryParam("page", page)
+                .queryParam("pageSize", pageSize)
+                .queryParam("option", option)
+                .queryParam("keyword", keyword)
+                .build().toString();
+    }
+
+    public String getQueryString() {
+        // ?page=1&pageSize=10&option=T&keyword="title" 을 만들어주는 메서드
+        return getQueryString(page);
+    }
+
+    @Override
+    public String toString() {
+        return "SearchCondition{" +
+                "page=" + page +
+                ", pageSize=" + pageSize +
+                ", keyword='" + keyword + '\'' +
+                ", option='" + option + '\'' +
+                '}';
+    }
+
+
 
     public Integer getPage() {
         return page;
@@ -33,11 +62,7 @@ public class SearchCondition {
     }
 
     public Integer getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
+        return (page - 1) * pageSize;
     }
 
     public String getKeyword() {

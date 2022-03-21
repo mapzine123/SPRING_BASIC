@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fastcampus.ch4.domain.BoardDto;
 import com.fastcampus.ch4.domain.PageHandler;
+import com.fastcampus.ch4.domain.SearchCondition;
 import com.fastcampus.ch4.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -111,33 +112,18 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public String list(Integer page, Integer pageSize, HttpServletRequest request, HttpSession session, Model m) {
+    public String list(SearchCondition sc, HttpServletRequest request, HttpSession session, Model m) {
         if(!loginCheck(request))
             return "redirect:/login/login?toURL="+request.getRequestURL();  // 로그인을 안했으면 로그인 화면으로 이동
-        System.out.println("page = " + page);
-        System.out.println("pageSize = " + pageSize);
-
-        if (page == null) {
-            page = 1;
-        }
-
-        if (pageSize == null) {
-            pageSize = 10;
-        }
 
         try {
-            int totalCnt = boardService.getCount();
-            PageHandler pageHandler = new PageHandler(totalCnt, page, pageSize);
+            int totalCnt = boardService.getSearchResultCnt(sc);
+            PageHandler pageHandler = new PageHandler(totalCnt, sc);
 
-            Map map = new HashMap();
-            map.put("offset", (page - 1) * pageSize);
-            map.put("pageSize", pageSize);
-
-            List<BoardDto> list = boardService.getPage(map);
+            List<BoardDto> list = boardService.getSearchResultPage(sc);
+            m.addAttribute("totalCnt", totalCnt);
             m.addAttribute("list", list);
             m.addAttribute("ph", pageHandler);
-            m.addAttribute("page", page);
-            m.addAttribute("pageSize", pageSize);
         } catch (Exception e) {
             e.printStackTrace();
         }
