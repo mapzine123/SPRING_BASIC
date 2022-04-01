@@ -8,5 +8,6 @@
         <typeAlias alias="BoardDto" type="com.fastcampus.ch4.domain.BoardDto"/>
         <typeAlias alias="GreenBoardDto" type="com.fastcampus.ch4.domain.GreenBoardDto"/>
         <typeAlias alias="SearchCondition" type="com.fastcampus.ch4.domain.SearchCondition"/>
+        <typeAlias alias="CommentDto" type="com.fastcampus.ch4.domain.CommentDto"/>
     </typeAliases>
 </configuration>
