@@ -5,10 +5,7 @@ import com.fastcampus.ch4.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -16,7 +13,28 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentService service;
-    
+
+    // 댓글 등록
+    @ResponseBody
+    @PostMapping("/comment")
+    public ResponseEntity<String> write(CommentDto dto, Integer bno, HttpSession session) {
+        String commenter = (String)session.getAttribute("id");
+        dto.setCommenter(commenter);
+        dto.setBno(bno);
+
+        try {
+
+            if(service.write(dto) != 1) {
+                throw new Exception("Write failed.");
+            }
+            return new ResponseEntity<>("WRT_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<String>("WRT_ERR", HttpStatus.BAD_REQUEST)
+        }
+
+    }
+
     // 지정된 댓글 삭제
     @DeleteMapping("/comments/{cno}") // comments/1 <-- 삭제할 댓글 번호
     @ResponseBody
