@@ -14,10 +14,29 @@ public class CommentController {
     @Autowired
     private CommentService service;
 
+    // 댓글 수정
+    @ResponseBody
+    @PatchMapping("/comment/{cno}")
+    public ResponseEntity<String> modify(@RequestBody CommentDto dto, Integer bno, HttpSession session) {
+        String commenter = (String)session.getAttribute("id");
+        dto.setComment(commenter);
+        dto.setBno(bno);
+        try {
+            if(service.modify(dto) != 1) {
+                throw new Exception("write failed");
+            }
+            return new ResponseEntity<>("MOD_OK", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("MOD_ERR", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     // 댓글 등록
     @ResponseBody
     @PostMapping("/comment")
-    public ResponseEntity<String> write(CommentDto dto, Integer bno, HttpSession session) {
+    public ResponseEntity<String> write(@RequestBody CommentDto dto, Integer bno, HttpSession session) {
         String commenter = (String)session.getAttribute("id");
         dto.setCommenter(commenter);
         dto.setBno(bno);
